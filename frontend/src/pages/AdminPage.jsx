@@ -1,9 +1,8 @@
-"use client";
-
 import { useEffect, useState } from "react";
-import { apiRequest } from "../../lib/api";
-import LogoutButton from "../../components/LogoutButton";
-import Link from "next/link";
+import { apiRequest } from "../lib/api";
+import LogoutButton from "../components/LogoutButton.jsx";
+import { Link } from "react-router-dom";
+import "./AdminPage.css";
 
 export default function AdminDashboard() {
   const [tickets, setTickets] = useState([]);
@@ -124,8 +123,8 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-gray-100 p-8">
-        <div className="max-w-7xl mx-auto">
+      <main className="admin-page">
+        <div className="admin-shell">
           <p>Loading admin dashboard...</p>
         </div>
       </main>
@@ -133,17 +132,17 @@ export default function AdminDashboard() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-7xl mx-auto">
+    <main className="admin-page">
+      <div className="admin-shell">
 
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="admin-header">
           <div>
-            <h1 className="text-3xl font-bold">
+            <h1 className="admin-title">
               Admin Dashboard
             </h1>
 
-            <p className="text-gray-500 mt-1">
+            <p className="admin-subtitle">
               Manage and resolve IT support tickets
             </p>
           </div>
@@ -153,25 +152,25 @@ export default function AdminDashboard() {
 
         {/* Error */}
         {error && (
-          <div className="bg-red-100 text-red-700 p-4 rounded-lg mb-6">
+          <div className="admin-error">
             {error}
           </div>
         )}
 
         {/* Statistics */}
         {stats && (
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+          <div className="admin-statistics">
             {Object.entries(stats).map(
               ([status, count]) => (
                 <div
                   key={status}
-                  className="bg-white p-5 rounded-xl shadow"
+                  className="admin-stat-card"
                 >
-                  <p className="capitalize text-gray-500">
+                  <p className="admin-stat-label">
                     {status.replace("_", " ")}
                   </p>
 
-                  <p className="text-3xl font-bold mt-2">
+                  <p className="admin-stat-value">
                     {count}
                   </p>
                 </div>
@@ -182,87 +181,87 @@ export default function AdminDashboard() {
 
         {/* No tickets */}
         {tickets.length === 0 ? (
-          <div className="bg-white rounded-xl shadow p-10 text-center">
-            <h2 className="text-xl font-semibold">
+          <div className="admin-empty">
+            <h2 className="admin-empty-title">
               No tickets found
             </h2>
 
-            <p className="text-gray-500 mt-2">
+            <p className="admin-muted">
               There are currently no support tickets.
             </p>
           </div>
         ) : (
           /* Tickets */
-          <div className="space-y-5">
+          <div className="admin-ticket-list">
             {tickets.map((ticket) => (
               <div
                 key={ticket._id}
-                className="bg-white rounded-xl shadow p-6"
+                className="admin-ticket"
               >
 
                 {/* Ticket header */}
-                <div className="flex justify-between items-start gap-4">
+                <div className="admin-ticket-header">
                   <div>
                     <Link
-                      href={`/tickets/${ticket._id}`}
-                      className="text-xl font-bold hover:underline"
+                      to={`/tickets/${ticket._id}`}
+                      className="admin-ticket-title"
                     >
                       {ticket.title}
                     </Link>
 
-                    <p className="text-gray-500 mt-1">
+                    <p className="admin-ticket-description">
                       {ticket.description}
                     </p>
                   </div>
 
-                  <span className="px-3 py-1 rounded-full bg-gray-100 capitalize whitespace-nowrap">
+                  <span className="admin-ticket-status">
                     {ticket.status.replace("_", " ")}
                   </span>
                 </div>
 
                 {/* Ticket information */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-5 text-sm">
+                <div className="admin-ticket-information">
 
                   <div>
-                    <p className="text-gray-500">
+                    <p className="admin-field-label">
                       Employee
                     </p>
 
-                    <p className="font-medium">
+                    <p className="admin-field-value">
                       {ticket.createdBy?.name || "Unknown"}
                     </p>
 
-                    <p className="text-gray-400">
+                    <p className="admin-field-secondary">
                       {ticket.createdBy?.email || ""}
                     </p>
                   </div>
 
                   <div>
-                    <p className="text-gray-500">
+                    <p className="admin-field-label">
                       Priority
                     </p>
 
-                    <p className="font-medium capitalize">
+                    <p className="admin-field-value admin-capitalize">
                       {ticket.priority}
                     </p>
                   </div>
 
                   <div>
-                    <p className="text-gray-500">
+                    <p className="admin-field-label">
                       Category
                     </p>
 
-                    <p className="font-medium capitalize">
+                    <p className="admin-field-value admin-capitalize">
                       {ticket.category}
                     </p>
                   </div>
 
                   <div>
-                    <p className="text-gray-500">
+                    <p className="admin-field-label">
                       Assigned To
                     </p>
 
-                    <p className="font-medium">
+                    <p className="admin-field-value">
                       {ticket.assignedTo?.name ||
                         "Unassigned"}
                     </p>
@@ -271,13 +270,13 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* Admin actions */}
-                <div className="border-t mt-5 pt-5">
+                <div className="admin-actions">
 
-                  <p className="font-semibold mb-3">
+                  <p className="admin-actions-title">
                     Admin Actions
                   </p>
 
-                  <div className="flex flex-wrap gap-3">
+                  <div className="admin-actions-row">
 
                     {/* Assign */}
                     <select
@@ -288,7 +287,7 @@ export default function AdminDashboard() {
                           e.target.value
                         )
                       }
-                      className="border rounded px-3 py-2"
+                      className="admin-assignee"
                     >
                       <option value="">
                         {ticket.assignedTo
@@ -315,7 +314,7 @@ export default function AdminDashboard() {
                             "in_progress"
                           )
                         }
-                        className="bg-blue-600 text-white px-4 py-2 rounded"
+                        className="admin-button admin-start-button"
                       >
                         Start Work
                       </button>
@@ -330,7 +329,7 @@ export default function AdminDashboard() {
                             "closed"
                           )
                         }
-                        className="bg-gray-800 text-white px-4 py-2 rounded"
+                        className="admin-button admin-close-button"
                       >
                         Close Ticket
                       </button>
@@ -340,7 +339,7 @@ export default function AdminDashboard() {
 
                   {/* Resolution */}
                   {ticket.status === "in_progress" && (
-                    <div className="mt-4">
+                    <div className="admin-resolution-form">
 
                       <textarea
                         rows={3}
@@ -355,14 +354,14 @@ export default function AdminDashboard() {
                           }))
                         }
                         placeholder="Describe how the issue was resolved..."
-                        className="w-full border rounded p-3"
+                        className="admin-resolution-input"
                       />
 
                       <button
                         onClick={() =>
                           resolveTicket(ticket._id)
                         }
-                        className="mt-2 bg-green-600 text-white px-4 py-2 rounded"
+                        className="admin-button admin-resolve-button"
                       >
                         Resolve Ticket
                       </button>
@@ -372,12 +371,12 @@ export default function AdminDashboard() {
 
                   {/* Existing resolution */}
                   {ticket.resolution && (
-                    <div className="mt-4 bg-green-50 p-4 rounded">
-                      <p className="font-semibold">
+                    <div className="admin-existing-resolution">
+                      <p className="admin-existing-resolution-title">
                         Resolution
                       </p>
 
-                      <p className="text-gray-700 mt-1">
+                      <p className="admin-existing-resolution-text">
                         {ticket.resolution}
                       </p>
                     </div>

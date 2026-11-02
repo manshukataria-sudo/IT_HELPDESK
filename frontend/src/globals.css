@@ -1,0 +1,116 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  border: 0 solid #e5e7eb;
+}
+
+html {
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  tab-size: 4;
+  font-family:
+    ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
+}
+
+body {
+  margin: 0;
+  line-height: inherit;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1,
+h2 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+button,
+input,
+select,
+textarea,
+::file-selector-button {
+  margin: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+button,
+input:where([type="button"], [type="reset"], [type="submit"]) {
+  appearance: button;
+  background-color: transparent;
+  background-image: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  opacity: 1;
+  color: #9ca3af;
+}
+
+::file-selector-button {
+  letter-spacing: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.login-title,
+.dashboard-title,
+.new-ticket-title,
+.ticket-title,
+.admin-title {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 36px;
+}
+
+.login-input,
+.new-ticket-input,
+.ticket-comment-input,
+.admin-assignee,
+.admin-resolution-input {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 12px;
+  background: #fff;
+}
+
+.dashboard-page,
+.new-ticket-page,
+.ticket-details-page,
+.admin-page {
+  min-height: 100vh;
+  background: #f3f4f6;
+  padding: 32px;
+}
+
+.logout-button {
+  border-radius: 4px;
+  background: #dc2626;
+  padding: 8px 16px;
+  color: #fff;
+}

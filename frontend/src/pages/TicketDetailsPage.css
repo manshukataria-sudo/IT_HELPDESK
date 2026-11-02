@@ -1,0 +1,137 @@
+.ticket-details-shell {
+  width: 100%;
+  max-width: 896px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.ticket-panel,
+.ticket-comments-panel,
+.ticket-error-card {
+  border-radius: 12px;
+  background: #fff;
+  padding: 32px;
+  box-shadow:
+    0 1px 3px 0 rgb(0 0 0 / 0.1),
+    0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+.ticket-error-card {
+  max-width: 896px;
+  margin: 0 auto;
+}
+
+.ticket-error {
+  color: #dc2626;
+}
+
+.ticket-loading {
+  max-width: 896px;
+  margin: 0 auto;
+}
+
+.ticket-description {
+  margin-top: 16px;
+  color: #4b5563;
+}
+
+.ticket-metadata {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.ticket-resolution {
+  margin-top: 24px;
+  border-radius: 4px;
+  background: #f0fdf4;
+  padding: 16px;
+}
+
+.ticket-resolution-text,
+.ticket-comment-message {
+  margin-top: 8px;
+}
+
+.ticket-attachments {
+  margin-top: 24px;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 24px;
+}
+
+.ticket-section-title {
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+}
+
+.ticket-attachment-list,
+.ticket-comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ticket-comment-list {
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.ticket-attachment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.ticket-attachment-name,
+.ticket-comment > strong {
+  font-weight: 500;
+}
+
+.ticket-attachment-meta {
+  margin-top: 4px;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.ticket-download,
+.ticket-comment-submit {
+  border-radius: 4px;
+  background: #000;
+  padding: 8px 16px;
+  color: #fff;
+}
+
+.ticket-download:disabled {
+  opacity: 0.5;
+}
+
+.ticket-comments-panel {
+  margin-top: 24px;
+}
+
+.ticket-muted {
+  color: #6b7280;
+}
+
+.ticket-comment {
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 12px;
+}
+
+.ticket-comment-input {
+  display: block;
+  border-radius: 4px;
+}
+
+.ticket-comment-submit {
+  margin-top: 12px;
+  padding: 12px 20px;
+}

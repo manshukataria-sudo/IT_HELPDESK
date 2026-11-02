@@ -1,5 +1,5 @@
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ||
+export const API_URL =
+  import.meta.env.VITE_API_URL ||
   "http://localhost:5000/api";
 
 export const apiRequest = async (endpoint, options = {}) => {
