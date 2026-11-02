@@ -1,8 +1,12 @@
 const Ticket = require("../models/Ticket");
 const User = require("../models/User");
 const { isValidTransition } = require("../services/ticketService");
-const { uploadToBlob } = require("../services/blobService");
-const { containerClient } = require("../config/azureBlob");
+const {
+  uploadToCloudinary,
+  downloadFromCloudinary,
+} = require("../services/cloudinaryService");
+const { Readable } = require("stream");
+const { pipeline } = require("stream/promises");
 
 const createTicket = async (req, res) => {
   try {
@@ -18,7 +22,7 @@ const createTicket = async (req, res) => {
     let attachment = null;
 
     if (req.file) {
-      attachment = await uploadToBlob(req.file);
+      attachment = await uploadToCloudinary(req.file);
     }
 
     const ticket = await Ticket.create({
@@ -140,20 +144,20 @@ const downloadAttachment = async (req, res) => {
       });
     }
 
-    const blockBlobClient =
-      containerClient.getBlockBlobClient(blobName);
+    const downloadResponse = await downloadFromCloudinary(blobName);
 
-    const exists = await blockBlobClient.exists();
-
-    if (!exists) {
+    if (downloadResponse.status === 404) {
       return res.status(404).json({
         success: false,
-        message: "File not found in Azure Blob Storage",
+        message: "File not found in Cloudinary",
       });
     }
 
-    const downloadResponse =
-      await blockBlobClient.download();
+    if (!downloadResponse.ok || !downloadResponse.body) {
+      throw new Error(
+        `Cloudinary download failed with status ${downloadResponse.status}`
+      );
+    }
 
     res.setHeader(
       "Content-Type",
@@ -167,11 +171,8 @@ const downloadAttachment = async (req, res) => {
       )}`
     );
 
-    if (attachment.size) {
-      res.setHeader("Content-Length", attachment.size);
-    }
-
-    downloadResponse.readableStreamBody.pipe(res);
+    res.setHeader("Content-Length", attachment.size);
+    await pipeline(Readable.fromWeb(downloadResponse.body), res);
   } catch (error) {
     console.error(
       "Download attachment error:",

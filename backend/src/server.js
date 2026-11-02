@@ -17,11 +17,8 @@ const app = express();
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://it-helpdesk-frontend-msk-bpakg8ahh3ftc7h9.centralindia-01.azurewebsites.net",
-    ],
-  })
+    origin: ["https://users-helpdesk.netlify.app", "http://localhost:5173"],
+  }),
 );
 
 app.use(helmet());

@@ -43,6 +43,7 @@ router.get(
   protect,
   downloadAttachment
 );
+
 // Employee owner OR Admin
 router.get("/:id", protect, getTicketById);
 
