@@ -154,9 +154,15 @@ const downloadAttachment = async (req, res) => {
     }
 
     if (!downloadResponse.ok || !downloadResponse.body) {
-      throw new Error(
-        `Cloudinary download failed with status ${downloadResponse.status}`
+      console.error(
+        "Cloudinary attachment download failed:",
+        downloadResponse.status
       );
+
+      return res.status(502).json({
+        success: false,
+        message: "Cloudinary could not provide the attachment",
+      });
     }
 
     res.setHeader(

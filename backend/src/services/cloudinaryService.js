@@ -15,11 +15,11 @@ const uploadToCloudinary = async (file) => {
         },
         (error, result) => {
           if (error) {
-            reject(error);
+            reject(new Error(error.message || "Cloudinary upload failed"));
             return;
           }
 
-          if (!result) {
+          if (!result?.public_id) {
             reject(new Error("Cloudinary upload returned no asset"));
             return;
           }
@@ -41,11 +41,12 @@ const uploadToCloudinary = async (file) => {
 };
 
 const downloadFromCloudinary = async (publicId) => {
-  const signedUrl = cloudinary.url(publicId, {
+  const format = path.extname(publicId).slice(1);
+  const signedUrl = cloudinary.utils.private_download_url(publicId, format, {
     resource_type: "raw",
     type: "authenticated",
-    sign_url: true,
-    secure: true,
+    attachment: true,
+    expires_at: Math.floor(Date.now() / 1000) + 300,
   });
 
   return fetch(signedUrl);

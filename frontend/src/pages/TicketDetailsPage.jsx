@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { apiRequest, API_URL } from "../lib/api";
+import { apiFetch, apiRequest } from "../lib/api";
 import "./TicketDetailsPage.css";
 
 export default function TicketDetails() {
@@ -56,17 +56,10 @@ export default function TicketDetails() {
     try {
       setDownloading(attachment.blobName);
 
-      const token = localStorage.getItem("token");
-
-      const response = await fetch(
-        `${API_URL}/tickets/${id}/attachments/${encodeURIComponent(
+      const response = await apiFetch(
+        `/tickets/${id}/attachments/${encodeURIComponent(
           attachment.blobName,
-        )}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
+        )}`
       );
 
       if (!response.ok) {

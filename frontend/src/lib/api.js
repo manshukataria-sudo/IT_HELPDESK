@@ -2,31 +2,35 @@ export const API_URL =
   import.meta.env.VITE_API_URL ||
   "http://localhost:5000/api";
 
-export const apiRequest = async (endpoint, options = {}) => {
+export const apiFetch = async (endpoint, options = {}) => {
   const token =
     typeof window !== "undefined"
       ? localStorage.getItem("token")
       : null;
 
-  const url = `${API_URL}${endpoint}`;
-
-  console.log("API Request:", url);
-
-  const isFormData = options.body instanceof FormData;
-
   const headers = {
     ...(token && {
       Authorization: `Bearer ${token}`,
     }),
-
     ...options.headers,
   };
 
-  if (!isFormData) {
+  return fetch(`${API_URL}${endpoint}`, {
+    ...options,
+    headers,
+  });
+};
+
+export const apiRequest = async (endpoint, options = {}) => {
+  const headers = {
+    ...options.headers,
+  };
+
+  if (!(options.body instanceof FormData)) {
     headers["Content-Type"] = "application/json";
   }
 
-  const response = await fetch(url, {
+  const response = await apiFetch(endpoint, {
     ...options,
     headers,
   });
