@@ -145,15 +145,6 @@ it-helpdesk/
 
 ## Cloudinary Attachment Storage
 
-Ticket attachments are stored as authenticated raw assets in Cloudinary instead of the application server. Downloads remain behind the ticket authorization endpoint and are fetched using signed Cloudinary URLs.
-
-The database stores only the attachment metadata such as:
-
-Original file name
-Cloudinary public ID
-File type
-File size
-
 This keeps file storage separate from application data.
 
 ## Local Setup
@@ -173,7 +164,7 @@ Open another terminal:
     npm install
     npm run dev
 
-The frontend runs on: http://localhost:3000
+The frontend runs on: http://localhost:5173
 
 The backend runs on: http://localhost:5000
 
@@ -191,7 +182,7 @@ Example:
 
 PORT=5000
 
-MONGO_URI=your_mongodb_connection_string
+MONGODB_URI=your_mongodb_connection_string
 
 JWT_SECRET=your_jwt_secret
 
@@ -210,11 +201,3 @@ frontend/.env.local
 Set the API URL used by the React app:
 
 VITE_API_URL=http://localhost:5000/api
-
-## Deployment
-
-The application is deployed using Microsoft Azure. The React frontend is built as a single-page application and served by the frontend Node.js server.
-
-GitHub -> GitHub Actions -> Azure App Service
-
-The frontend and backend are deployed separately.
