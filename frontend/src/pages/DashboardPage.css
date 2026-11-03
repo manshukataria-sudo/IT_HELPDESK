@@ -1,0 +1,94 @@
+.dashboard-shell {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.dashboard-shell {
+  max-width: 1152px;
+}
+
+.dashboard-header,
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.dashboard-subtitle,
+.dashboard-muted {
+  color: #6b7280;
+}
+
+.dashboard-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.dashboard-create {
+  border-radius: 4px;
+  background: #000;
+  padding: 12px 20px;
+  color: #fff;
+}
+
+.dashboard-error {
+  margin-bottom: 16px;
+  color: #dc2626;
+}
+
+.dashboard-tickets,
+.dashboard-ticket-list {
+  display: grid;
+  gap: 16px;
+}
+
+.dashboard-empty,
+.dashboard-ticket {
+  border-radius: 12px;
+  background: #fff;
+  padding: 20px;
+}
+
+.dashboard-empty {
+  padding: 32px;
+  text-align: center;
+}
+
+.dashboard-ticket {
+  box-shadow:
+    0 1px 3px 0 rgb(0 0 0 / 0.1),
+    0 1px 2px -1px rgb(0 0 0 / 0.1);
+  transition: box-shadow 150ms ease;
+}
+
+.dashboard-ticket:hover {
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.dashboard-ticket-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dashboard-ticket-title {
+  font-weight: 600;
+}
+
+.dashboard-status {
+  text-transform: capitalize;
+}
+
+.dashboard-description {
+  margin-top: 8px;
+  color: #6b7280;
+}
+
+.dashboard-priority {
+  margin-top: 12px;
+  font-size: 14px;
+  line-height: 20px;
+}

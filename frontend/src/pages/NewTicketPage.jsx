@@ -1,11 +1,10 @@
-"use client";
-
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { apiRequest } from "../../../lib/api";
+import { useNavigate } from "react-router-dom";
+import { apiRequest } from "../lib/api";
+import "./NewTicketPage.css";
 
 export default function NewTicket() {
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const [form, setForm] = useState({
     title: "",
@@ -41,7 +40,7 @@ export default function NewTicket() {
         body: formData,
       });
 
-      router.push("/dashboard");
+      navigate("/dashboard");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -50,23 +49,23 @@ export default function NewTicket() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-100 p-8">
+    <main className="new-ticket-page">
       <form
         onSubmit={submit}
-        className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow"
+        className="new-ticket-form"
       >
-        <h1 className="text-3xl font-bold mb-6">
+        <h1 className="new-ticket-title">
           Create Support Ticket
         </h1>
 
         {error && (
-          <p className="text-red-600 mb-4">
+          <p className="new-ticket-error">
             {error}
           </p>
         )}
 
         <input
-          className="w-full border p-3 rounded mb-4"
+          className="new-ticket-input new-ticket-field"
           placeholder="Ticket title"
           value={form.title}
           onChange={(e) =>
@@ -79,7 +78,7 @@ export default function NewTicket() {
         />
 
         <textarea
-          className="w-full border p-3 rounded mb-4"
+          className="new-ticket-input new-ticket-field"
           placeholder="Describe your problem"
           rows={6}
           value={form.description}
@@ -93,7 +92,7 @@ export default function NewTicket() {
         />
 
         <select
-          className="w-full border p-3 rounded mb-4"
+          className="new-ticket-input new-ticket-field"
           value={form.category}
           onChange={(e) =>
             setForm({
@@ -110,7 +109,7 @@ export default function NewTicket() {
         </select>
 
         <select
-          className="w-full border p-3 rounded mb-6"
+          className="new-ticket-input new-ticket-priority"
           value={form.priority}
           onChange={(e) =>
             setForm({
@@ -126,10 +125,10 @@ export default function NewTicket() {
         </select>
 
         {/* Attachment */}
-        <div className="mb-6">
-          <label className="block font-medium mb-2">
+        <div className="new-ticket-attachment">
+          <label className="new-ticket-label">
             Attachment{" "}
-            <span className="text-gray-500">
+            <span className="new-ticket-muted">
               (optional)
             </span>
           </label>
@@ -139,11 +138,11 @@ export default function NewTicket() {
             onChange={(e) =>
               setAttachment(e.target.files[0] || null)
             }
-            className="w-full border p-3 rounded"
+            className="new-ticket-input"
           />
 
           {attachment && (
-            <p className="text-sm text-gray-600 mt-2">
+            <p className="new-ticket-selected">
               Selected: {attachment.name}
             </p>
           )}
@@ -152,7 +151,7 @@ export default function NewTicket() {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full bg-black text-white p-3 rounded disabled:opacity-50"
+          className="new-ticket-submit"
         >
           {submitting
             ? "Creating Ticket..."

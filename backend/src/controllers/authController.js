@@ -29,6 +29,7 @@ const registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      ...(req.body.role && req.body.role === "admin" ? req.body.role : {}),
     });
 
     res.status(201).json({
@@ -72,10 +73,7 @@ const loginUser = async (req, res) => {
       });
     }
 
-    const passwordMatches = await bcrypt.compare(
-      password,
-      user.password
-    );
+    const passwordMatches = await bcrypt.compare(password, user.password);
 
     if (!passwordMatches) {
       return res.status(401).json({
@@ -92,7 +90,7 @@ const loginUser = async (req, res) => {
       process.env.JWT_SECRET,
       {
         expiresIn: process.env.JWT_EXPIRES_IN,
-      }
+      },
     );
 
     res.status(200).json({

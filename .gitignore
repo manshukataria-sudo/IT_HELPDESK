@@ -7,7 +7,7 @@ node_modules/
 .env.*
 !.env.example
 
-# Next.js
+# Framework build output
 .next/
 **/.next/
 out/

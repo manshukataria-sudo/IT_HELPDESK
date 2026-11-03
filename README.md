@@ -5,7 +5,7 @@ A full-stack IT Helpdesk Management System that allows employees to raise techni
 ## Live Demo
 
 **Frontend:**  
-https://it-helpdesk-frontend-msk-bpakg8ahh3ftc7h9.centralindia-01.azurewebsites.net/
+https://users-helpdesk.netlify.app
 
 ### Demo Credentials
 
@@ -33,16 +33,17 @@ https://it-helpdesk-frontend-msk-bpakg8ahh3ftc7h9.centralindia-01.azurewebsites.
 - Ticket comments
 - Ticket statistics dashboard
 - File attachments
-- Azure Blob Storage for attachments
+- Cloudinary for attachments
 - Secure attachment downloads
 
 ## Tech Stack
 
 ### Frontend
 
-- Next.js
 - React
-- Tailwind CSS
+- Vite
+- React Router
+- CSS
 
 ### Backend
 
@@ -63,7 +64,7 @@ https://it-helpdesk-frontend-msk-bpakg8ahh3ftc7h9.centralindia-01.azurewebsites.
 
 - Microsoft Azure
 - Azure App Service
-- Azure Blob Storage
+- Cloudinary
 - GitHub Actions
 
 ### Security
@@ -101,21 +102,22 @@ it-helpdesk/
 │
 ├── frontend/
 │   ├── src/
-│   │   ├── app/
-│   │   │   ├── admin/
-│   │   │   ├── dashboard/
-│   │   │   ├── tickets/
-│   │   │   ├── globals.css
-│   │   │   ├── layout.js
-│   │   │   └── page.js
-│   │   │
+│   │   ├── pages/
+│   │   │   ├── AdminPage.css
+│   │   │   ├── DashboardPage.css
+│   │   │   ├── LoginPage.css
+│   │   │   ├── NewTicketPage.css
+│   │   │   └── TicketDetailsPage.css
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   ├── globals.css
 │   │   ├── components/
 │   │   └── lib/
 │   │
-│   ├── public/
+│   ├── index.html
 │   ├── .env.example
-│   ├── AGENTS.md
-│   ├── next.config.ts
+│   ├── server.js
+│   ├── vite.config.mjs
 │   ├── package.json
 │   └── package-lock.json
 │
@@ -127,7 +129,7 @@ it-helpdesk/
 
 ## Architecture
 
-      Next.js Frontend
+       React Frontend
             ↓
       Express.js REST API
             ↓
@@ -141,14 +143,14 @@ it-helpdesk/
 
     Open -> Assigned -> In Progress -> Resolved -> Closed
 
-## Azure Blob Storage
+## Cloudinary Attachment Storage
 
-Ticket attachments are stored in Azure Blob Storage instead of the application server.
+Ticket attachments are stored as authenticated raw assets in Cloudinary instead of the application server. Downloads remain behind the ticket authorization endpoint and are fetched using signed Cloudinary URLs.
 
 The database stores only the attachment metadata such as:
 
 Original file name
-Blob name
+Cloudinary public ID
 File type
 File size
 
@@ -183,7 +185,7 @@ Create:
 
 backend/.env
 
-Add the required MongoDB, JWT, and Azure Blob Storage environment variables.
+Add the required MongoDB, JWT, and Cloudinary environment variables. Create a Cloudinary account and copy its cloud name, API key, and API secret from the Cloudinary dashboard.
 
 Example:
 
@@ -193,20 +195,25 @@ MONGO_URI=your_mongodb_connection_string
 
 JWT_SECRET=your_jwt_secret
 
-AZURE_STORAGE_CONNECTION_STRING=your_azure_storage_connection_string
+CLOUDINARY_CLOUD_NAME=your_cloud_name
 
-AZURE_STORAGE_CONTAINER_NAME=your_container_name
+CLOUDINARY_API_KEY=your_api_key
+
+CLOUDINARY_API_SECRET=your_api_secret
 
 ### Frontend
 
 Create:
 
 frontend/.env.local
-NEXT_PUBLIC_API_URL=http://localhost:5000/api
+
+Set the API URL used by the React app:
+
+VITE_API_URL=http://localhost:5000/api
 
 ## Deployment
 
-The application is deployed using Microsoft Azure.
+The application is deployed using Microsoft Azure. The React frontend is built as a single-page application and served by the frontend Node.js server.
 
 GitHub -> GitHub Actions -> Azure App Service
 

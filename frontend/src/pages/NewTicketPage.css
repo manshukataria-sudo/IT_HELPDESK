@@ -1,0 +1,54 @@
+.new-ticket-form {
+  width: 100%;
+  max-width: 672px;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 12px;
+  background: #fff;
+  padding: 32px;
+  box-shadow:
+    0 1px 3px 0 rgb(0 0 0 / 0.1),
+    0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+.new-ticket-title {
+  margin-bottom: 24px;
+}
+
+.new-ticket-error {
+  margin-bottom: 16px;
+  color: #dc2626;
+}
+
+.new-ticket-field {
+  margin-bottom: 16px;
+}
+
+.new-ticket-priority {
+  margin-bottom: 24px;
+}
+
+.new-ticket-attachment {
+  margin-bottom: 24px;
+}
+
+.new-ticket-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.new-ticket-muted {
+  color: #6b7280;
+}
+
+.new-ticket-selected {
+  margin-top: 8px;
+  color: #4b5563;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.new-ticket-submit:disabled {
+  opacity: 0.5;
+}

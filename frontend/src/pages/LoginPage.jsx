@@ -1,10 +1,10 @@
-"use client";
-
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { apiRequest } from "../lib/api";
-export default function Home() {
-  const router = useRouter();
+import "./LoginPage.css";
+
+export default function LoginPage() {
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,9 +30,9 @@ export default function Home() {
       localStorage.setItem("user", JSON.stringify(data.user));
 
       if (data.user.role === "admin") {
-        router.push("/admin");
+        navigate("/admin");
       } else {
-        router.push("/dashboard");
+        navigate("/dashboard");
       }
     } catch (err) {
       setError(err.message || "Login failed");
@@ -42,23 +42,23 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-100">
+    <main className="login-page">
       <form
         onSubmit={handleLogin}
-        className="w-full max-w-md bg-white p-8 rounded-xl shadow"
+        className="login-card"
       >
-        <h1 className="text-3xl font-bold mb-2">IT Helpdesk</h1>
+        <h1 className="login-title">IT Helpdesk</h1>
 
-        <p className="text-gray-500 mb-6">Sign in to your account</p>
+        <p className="login-subtitle">Sign in to your account</p>
 
         {error && (
-          <div className="bg-red-100 text-red-700 p-3 rounded mb-4">
+          <div className="login-error">
             {error}
           </div>
         )}
 
         <input
-          className="w-full border p-3 rounded mb-4"
+          className="login-input login-email"
           placeholder="Email"
           type="email"
           value={email}
@@ -67,7 +67,7 @@ export default function Home() {
         />
 
         <input
-          className="w-full border p-3 rounded mb-6"
+          className="login-input login-password"
           placeholder="Password"
           type="password"
           value={password}
@@ -77,7 +77,7 @@ export default function Home() {
 
         <button
           disabled={loading}
-          className="w-full bg-black text-white p-3 rounded"
+          className="login-submit"
         >
           {loading ? "Signing in..." : "Sign In"}
         </button>

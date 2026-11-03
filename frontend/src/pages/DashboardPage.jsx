@@ -1,9 +1,9 @@
-"use client";
-
 import { useEffect, useState } from "react";
-import { apiRequest } from "../../lib/api";
-import Link from "next/link";
-import LogoutButton from "../../components/LogoutButton";
+import { apiRequest } from "../lib/api";
+import { Link } from "react-router-dom";
+import LogoutButton from "../components/LogoutButton.jsx";
+import "./DashboardPage.css";
+
 export default function Dashboard() {
   const [tickets, setTickets] = useState([]);
   const [error, setError] = useState("");
@@ -23,24 +23,24 @@ setTickets(data.tickets);
   }, []);
 
   return (
-    <main className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-6xl mx-auto">
+    <main className="dashboard-page">
+      <div className="dashboard-shell">
 
- <div className="flex justify-between items-center mb-8">
+ <div className="dashboard-header">
   <div>
-    <h1 className="text-3xl font-bold">
+    <h1 className="dashboard-title">
       My Tickets
     </h1>
 
-    <p className="text-gray-500">
+    <p className="dashboard-subtitle">
       Track your IT support requests
     </p>
   </div>
 
-  <div className="flex gap-3">
+  <div className="dashboard-actions">
     <Link
-      href="/tickets/new"
-      className="bg-black text-white px-5 py-3 rounded"
+      to="/tickets/new"
+      className="dashboard-create"
     >
       Create Ticket
     </Link>
@@ -50,39 +50,39 @@ setTickets(data.tickets);
 </div>
 
         {error && (
-          <p className="text-red-600 mb-4">{error}</p>
+          <p className="dashboard-error">{error}</p>
         )}
 
-        <div className="grid gap-4">
+        <div className="dashboard-tickets">
           {tickets.length === 0 ? (
-  <div className="bg-white p-8 rounded-xl text-center">
-    <p className="text-gray-500">
+  <div className="dashboard-empty">
+    <p className="dashboard-muted">
       You haven't created any tickets yet.
     </p>
   </div>
 ) : (
-  <div className="grid gap-4">
+  <div className="dashboard-ticket-list">
     {tickets.map((ticket) => (
       <Link
-        href={`/tickets/${ticket._id}`}
+        to={`/tickets/${ticket._id}`}
         key={ticket._id}
-        className="bg-white p-5 rounded-xl shadow hover:shadow-md"
+        className="dashboard-ticket"
       >
-        <div className="flex justify-between">
-          <h2 className="font-semibold">
+        <div className="dashboard-ticket-header">
+          <h2 className="dashboard-ticket-title">
             {ticket.title}
           </h2>
 
-          <span className="capitalize">
+          <span className="dashboard-status">
             {ticket.status.replace("_", " ")}
           </span>
         </div>
 
-        <p className="text-gray-500 mt-2">
+        <p className="dashboard-description">
           {ticket.description}
         </p>
 
-        <p className="text-sm mt-3">
+        <p className="dashboard-priority">
           Priority: {ticket.priority}
         </p>
       </Link>

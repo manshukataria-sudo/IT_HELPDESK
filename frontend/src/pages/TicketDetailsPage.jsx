@@ -1,11 +1,10 @@
-"use client";
-
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { apiRequest } from "../../../lib/api";
+import { useParams } from "react-router-dom";
+import { apiFetch, apiRequest } from "../lib/api";
+import "./TicketDetailsPage.css";
 
 export default function TicketDetails() {
-  const params = useParams();
+  const { id } = useParams();
 
   const [ticket, setTicket] = useState(null);
   const [comments, setComments] = useState([]);
@@ -14,12 +13,12 @@ export default function TicketDetails() {
   const [downloading, setDownloading] = useState(null);
 
   useEffect(() => {
-    if (!params.id) return;
+    if (!id) return;
 
     const loadData = async () => {
       try {
-        const ticketData = await apiRequest(`/tickets/${params.id}`);
-        const commentData = await apiRequest(`/comments/${params.id}`);
+        const ticketData = await apiRequest(`/tickets/${id}`);
+        const commentData = await apiRequest(`/comments/${id}`);
 
         setTicket(ticketData.ticket);
         setComments(commentData.comments);
@@ -30,13 +29,13 @@ export default function TicketDetails() {
     };
 
     loadData();
-  }, [params.id]);
+  }, [id]);
 
   const addComment = async () => {
     if (!message.trim()) return;
 
     try {
-      await apiRequest(`/comments/${params.id}`, {
+      await apiRequest(`/comments/${id}`, {
         method: "POST",
         body: JSON.stringify({
           message,
@@ -45,7 +44,7 @@ export default function TicketDetails() {
 
       setMessage("");
 
-      const commentData = await apiRequest(`/comments/${params.id}`);
+      const commentData = await apiRequest(`/comments/${id}`);
 
       setComments(commentData.comments);
     } catch (err) {
@@ -57,17 +56,10 @@ export default function TicketDetails() {
     try {
       setDownloading(attachment.blobName);
 
-      const token = localStorage.getItem("token");
-
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/tickets/${params.id}/attachments/${encodeURIComponent(
+      const response = await apiFetch(
+        `/tickets/${id}/attachments/${encodeURIComponent(
           attachment.blobName,
-        )}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
+        )}`
       );
 
       if (!response.ok) {
@@ -105,9 +97,9 @@ export default function TicketDetails() {
 
   if (error) {
     return (
-      <main className="min-h-screen bg-gray-100 p-8">
-        <div className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow">
-          <p className="text-red-600">{error}</p>
+      <main className="ticket-details-page">
+        <div className="ticket-error-card">
+          <p className="ticket-error">{error}</p>
         </div>
       </main>
     );
@@ -115,22 +107,22 @@ export default function TicketDetails() {
 
   if (!ticket) {
     return (
-      <main className="min-h-screen bg-gray-100 p-8">
-        <p>Loading...</p>
+      <main className="ticket-details-page">
+        <p className="ticket-loading">Loading...</p>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-4xl mx-auto">
+    <main className="ticket-details-page">
+      <div className="ticket-details-shell">
         {/* Ticket */}
-        <div className="bg-white p-8 rounded-xl shadow">
-          <h1 className="text-3xl font-bold">{ticket.title}</h1>
+        <div className="ticket-panel">
+          <h1 className="ticket-title">{ticket.title}</h1>
 
-          <p className="text-gray-600 mt-4">{ticket.description}</p>
+          <p className="ticket-description">{ticket.description}</p>
 
-          <div className="grid grid-cols-2 gap-4 mt-6">
+          <div className="ticket-metadata">
             <p>
               <strong>Status:</strong> {ticket.status.replace("_", " ")}
             </p>
@@ -157,28 +149,28 @@ export default function TicketDetails() {
           </div>
 
           {ticket.resolution && (
-            <div className="mt-6 p-4 bg-green-50 rounded">
+            <div className="ticket-resolution">
               <strong>Resolution</strong>
 
-              <p className="mt-2">{ticket.resolution}</p>
+              <p className="ticket-resolution-text">{ticket.resolution}</p>
             </div>
           )}
 
           {/* Attachments */}
           {ticket.attachments?.length > 0 && (
-            <div className="mt-6 border-t pt-6">
-              <h2 className="text-xl font-bold mb-4">Attachments</h2>
+            <div className="ticket-attachments">
+              <h2 className="ticket-section-title">Attachments</h2>
 
-              <div className="space-y-3">
+              <div className="ticket-attachment-list">
                 {ticket.attachments.map((attachment) => (
                   <div
                     key={attachment.blobName}
-                    className="flex items-center justify-between border rounded-lg p-4"
+                    className="ticket-attachment"
                   >
                     <div>
-                      <p className="font-medium">📎 {attachment.fileName}</p>
+                      <p className="ticket-attachment-name">📎 {attachment.fileName}</p>
 
-                      <p className="text-sm text-gray-500 mt-1">
+                      <p className="ticket-attachment-meta">
                         {attachment.contentType} ·{" "}
                         {(attachment.size / 1024).toFixed(1)} KB
                       </p>
@@ -187,7 +179,7 @@ export default function TicketDetails() {
                     <button
                       onClick={() => downloadAttachment(attachment)}
                       disabled={downloading === attachment.blobName}
-                      className="bg-black text-white px-4 py-2 rounded disabled:opacity-50"
+                      className="ticket-download"
                     >
                       {downloading === attachment.blobName
                         ? "Downloading..."
@@ -201,25 +193,25 @@ export default function TicketDetails() {
         </div>
 
         {/* Comments */}
-        <div className="bg-white p-8 rounded-xl shadow mt-6">
-          <h2 className="text-xl font-bold mb-4">Comments</h2>
+        <div className="ticket-comments-panel">
+          <h2 className="ticket-section-title">Comments</h2>
 
-          <div className="space-y-4 mb-6">
+          <div className="ticket-comment-list">
             {comments.length === 0 ? (
-              <p className="text-gray-500">No comments yet.</p>
+              <p className="ticket-muted">No comments yet.</p>
             ) : (
               comments.map((comment) => (
-                <div key={comment._id} className="border-b pb-3">
+                <div key={comment._id} className="ticket-comment">
                   <strong>{comment.author?.name || "User"}</strong>
 
-                  <p className="mt-1">{comment.message}</p>
+                  <p className="ticket-comment-message">{comment.message}</p>
                 </div>
               ))
             )}
           </div>
 
           <textarea
-            className="w-full border rounded p-3"
+            className="ticket-comment-input"
             rows={4}
             placeholder="Write a comment..."
             value={message}
@@ -228,7 +220,7 @@ export default function TicketDetails() {
 
           <button
             onClick={addComment}
-            className="mt-3 bg-black text-white px-5 py-3 rounded"
+            className="ticket-comment-submit"
           >
             Add Comment
           </button>
