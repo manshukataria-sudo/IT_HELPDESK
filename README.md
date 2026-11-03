@@ -81,9 +81,6 @@ https://users-helpdesk.netlify.app
 
 it-helpdesk/
 │
-├── .github/
-│   └── workflows/
-│
 ├── backend/
 │   ├── src/
 │   │   ├── config/
@@ -117,15 +114,11 @@ it-helpdesk/
 │   ├── index.html
 │   ├── .env.example
 │   ├── server.js
-│   ├── vite.config.mjs
 │   ├── package.json
 │   └── package-lock.json
 │
 ├── .gitignore
-├── package.json
-├── package-lock.json
 └── README.md
-```
 
 ## Architecture
 
